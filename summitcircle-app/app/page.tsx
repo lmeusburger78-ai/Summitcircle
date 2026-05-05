@@ -68,6 +68,16 @@ export default function Home() {
 }}>
   👥 Freunde
 </a>
+<a href="/chat" style={{
+  color: '#a0b8a0',
+  fontSize: '14px',
+  textDecoration: 'none',
+  padding: '8px 16px',
+  borderRadius: '20px',
+  border: '1px solid #2a3d2a',
+}}>
+  💬 Chat
+</a>
               <button
                 onClick={handleLogout}
                 style={{
