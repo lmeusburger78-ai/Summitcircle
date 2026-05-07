@@ -12,18 +12,15 @@ export default function Home() {
     supabase.auth.getUser().then(async ({ data }) => {
       if (data.user) {
         setUser(data.user)
-        
         const { data: profileData } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', data.user.id)
           .single()
-        
         if (!profileData) {
           window.location.href = '/setup-profile'
           return
         }
-        
         setProfile(profileData)
       }
     })
@@ -58,26 +55,39 @@ export default function Home() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           {user ? (
             <>
-<a href="/friends" style={{
-  color: '#a0b8a0',
-  fontSize: '14px',
-  textDecoration: 'none',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  border: '1px solid #2a3d2a',
-}}>
-  👥 Freunde
-</a>
-<a href="/chat" style={{
-  color: '#a0b8a0',
-  fontSize: '14px',
-  textDecoration: 'none',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  border: '1px solid #2a3d2a',
-}}>
-  💬 Chat
-</a>
+              <a href="/friends" style={{
+                color: '#a0b8a0',
+                fontSize: '14px',
+                textDecoration: 'none',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                border: '1px solid #2a3d2a',
+              }}>
+                👥 Freunde
+              </a>
+              <a href="/chat" style={{
+                color: '#a0b8a0',
+                fontSize: '14px',
+                textDecoration: 'none',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                border: '1px solid #2a3d2a',
+              }}>
+                💬 Chat
+              </a>
+              <a href="/feed" style={{
+                color: '#a0b8a0',
+                fontSize: '14px',
+                textDecoration: 'none',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                border: '1px solid #2a3d2a',
+              }}>
+                📰 Feed
+              </a>
+              <span style={{ color: '#a0b8a0', fontSize: '14px' }}>
+                👋 {profile?.username ? `@${profile.username}` : user.email}
+              </span>
               <button
                 onClick={handleLogout}
                 style={{
