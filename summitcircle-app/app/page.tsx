@@ -85,6 +85,16 @@ export default function Home() {
               }}>
                 📰 Feed
               </a>
+              <a href="/tours" style={{
+                color: '#a0b8a0',
+                fontSize: '14px',
+                textDecoration: 'none',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                border: '1px solid #2a3d2a',
+              }}>
+                🗺️ Touren
+              </a>
               <span style={{ color: '#a0b8a0', fontSize: '14px' }}>
                 👋 {profile?.username ? `@${profile.username}` : user.email}
               </span>
