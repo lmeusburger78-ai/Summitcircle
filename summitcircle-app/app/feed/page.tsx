@@ -133,18 +133,31 @@ export default function FeedPage() {
     loadPosts(activeTab, friendIds, user.id)
   }
 
-  async function handleLike(postId: string) {
-    const supabase = createClient()
-    if (likedByMe[postId]) {
-      await supabase.from('post_likes').delete().eq('post_id', postId).eq('user_id', user.id)
-      setLikes((prev) => ({ ...prev, [postId]: (prev[postId] || 1) - 1 }))
-      setLikedByMe((prev) => ({ ...prev, [postId]: false }))
-    } else {
-      await supabase.from('post_likes').insert({ post_id: postId, user_id: user.id })
-      setLikes((prev) => ({ ...prev, [postId]: (prev[postId] || 0) + 1 }))
-      setLikedByMe((prev) => ({ ...prev, [postId]: true }))
+async function handleLike(postId: string) {
+  const supabase = createClient()
+  if (likedByMe[postId]) {
+    await supabase.from('post_likes').delete().eq('post_id', postId).eq('user_id', user.id)
+    setLikes((prev) => ({ ...prev, [postId]: (prev[postId] || 1) - 1 }))
+    setLikedByMe((prev) => ({ ...prev, [postId]: false }))
+  } else {
+    await supabase.from('post_likes').insert({ post_id: postId, user_id: user.id })
+    setLikes((prev) => ({ ...prev, [postId]: (prev[postId] || 0) + 1 }))
+    setLikedByMe((prev) => ({ ...prev, [postId]: true }))
+
+    // Benachrichtigung erstellen
+    const post = posts.find((p) => p.id === postId)
+    if (post && post.author_id !== user.id) {
+      await supabase.from('notifications').insert({
+        user_id: post.author_id,
+        actor_id: user.id,
+        type: 'like',
+        title: 'Neuer Like ❤️',
+        message: `@${profile?.username} hat deinen Post geliked`,
+        link: '/feed',
+      })
     }
   }
+}
 
   async function loadComments(postId: string) {
     const supabase = createClient()
@@ -156,17 +169,31 @@ export default function FeedPage() {
     setComments((prev) => ({ ...prev, [postId]: data || [] }))
   }
 
-  async function handleComment(postId: string) {
-    if (!newComment[postId]?.trim()) return
-    const supabase = createClient()
-    await supabase.from('post_comments').insert({
-      post_id: postId,
-      author_id: user.id,
-      content: newComment[postId].trim(),
+async function handleComment(postId: string) {
+  if (!newComment[postId]?.trim()) return
+  const supabase = createClient()
+  await supabase.from('post_comments').insert({
+    post_id: postId,
+    author_id: user.id,
+    content: newComment[postId].trim(),
+  })
+
+  // Benachrichtigung erstellen
+  const post = posts.find((p) => p.id === postId)
+  if (post && post.author_id !== user.id) {
+    await supabase.from('notifications').insert({
+      user_id: post.author_id,
+      actor_id: user.id,
+      type: 'comment',
+      title: 'Neuer Kommentar 💬',
+      message: `@${profile?.username} hat deinen Post kommentiert`,
+      link: '/feed',
     })
-    setNewComment((prev) => ({ ...prev, [postId]: '' }))
-    loadComments(postId)
   }
+
+  setNewComment((prev) => ({ ...prev, [postId]: '' }))
+  loadComments(postId)
+}
 
   function toggleComments(postId: string) {
     if (expandedPost === postId) {
