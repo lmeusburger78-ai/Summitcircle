@@ -26,7 +26,6 @@ export default function Home() {
       }
     })
 
-    // Touren laden
     const supabase2 = createClient()
     supabase2
       .from('tours')
@@ -68,21 +67,9 @@ export default function Home() {
   }
 
   return (
-    <div style={{
-      backgroundColor: '#0f1a0f',
-      minHeight: '100vh',
-      fontFamily: 'Arial, sans-serif',
-      color: '#e8f5e8',
-    }}>
+    <div style={{ backgroundColor: '#0f1a0f', minHeight: '100vh', fontFamily: 'Arial, sans-serif', color: '#e8f5e8' }}>
       {/* Navigation */}
-      <nav style={{
-        backgroundColor: '#162016',
-        padding: '16px 24px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderBottom: '1px solid #2a3d2a',
-      }}>
+      <nav style={{ backgroundColor: '#162016', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #2a3d2a' }}>
         <div style={{ color: '#4CAF50', fontSize: '20px', fontWeight: 'bold' }}>
           SummitCircle 🏔️
         </div>
@@ -93,6 +80,7 @@ export default function Home() {
               <a href="/chat" style={{ color: '#a0b8a0', fontSize: '14px', textDecoration: 'none', padding: '8px 16px', borderRadius: '20px', border: '1px solid #2a3d2a' }}>💬 Chat</a>
               <a href="/feed" style={{ color: '#a0b8a0', fontSize: '14px', textDecoration: 'none', padding: '8px 16px', borderRadius: '20px', border: '1px solid #2a3d2a' }}>📰 Feed</a>
               <a href="/tours" style={{ color: '#a0b8a0', fontSize: '14px', textDecoration: 'none', padding: '8px 16px', borderRadius: '20px', border: '1px solid #2a3d2a' }}>🗺️ Touren</a>
+              <a href="/inbox" style={{ color: '#a0b8a0', fontSize: '14px', textDecoration: 'none', padding: '8px 16px', borderRadius: '20px', border: '1px solid #2a3d2a' }}>🔔 Inbox</a>
               <a href="/profile" style={{ color: '#a0b8a0', fontSize: '14px', textDecoration: 'none', padding: '8px 16px', borderRadius: '20px', border: '1px solid #2a3d2a' }}>
                 👤 {profile?.username ? `@${profile.username}` : 'Profil'}
               </a>
